@@ -21,7 +21,7 @@ class BlogModelsTestCase(TestCase):
 		self.assertEqual(str(blog), blog.title)
 	
 	def test_get_absolute_url(self):
-		blog = Blog.objects.create(title="my entry title")
+		blog = Blog.objects.create(title="my entry title", slug="entry-title")
 		self.assertIsNotNone(blog.get_absolute_url())
 
 
@@ -34,17 +34,17 @@ class ProjectTest(TestCase):
 		response = self.client.get("/")
 		self.assertEqual(response.status_code, 200)
 
-# class HomePageTest(TestCase):
-	# '''
-	# Testing the list views in the HomePageTest
-	# [failed]
-	# '''
-	# def test_one_entry(self):
-	# 	Blog.objects.create(title="title-1", description="description")
-	# 	response = self.client.get('/')
-	# 	self.assertContains(response, "title-1")
-	# 	# self.assertContains(response, s)
-	# 	self.assertContains(response, "description")
+class HomePageTest(TestCase):
+	'''
+	Testing the list views in the HomePageTest
+	[failed]
+	'''
+	def test_one_entry(self):
+		Blog.objects.create(title="title-1", slug="title-1", description="description")
+		response = self.client.get('/')
+		self.assertContains(response, "title-1")
+		# self.assertContains(response, s)
+		self.assertContains(response, "description")
 	# def test_two_entries(self):
 	# 	Blog.objects.create(title="title-1", description="description")
 	# 	Blog.objects.create(title="this is a title", description="description")
