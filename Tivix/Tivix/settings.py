@@ -95,6 +95,7 @@ CACHES = {
 	'LOCATION': ' blog_cache',
 	}
 }
+# configuring the session engine inorder to be able to create the cache.
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
