@@ -6,9 +6,9 @@ from .models import Blog
 from .forms import BlogForm
 '''
 Testing the following.
-1) models
-2)views
-3) forms
+1) models[done]
+2)views[]
+3) forms[done]
 '''
 
 class BlogModelsTestCase(TestCase):
@@ -17,7 +17,7 @@ class BlogModelsTestCase(TestCase):
 	in the models.py [passed]
 	'''
 
-	def test_string_rep(self):
+	def test_string_repr(self):
 		blog = Blog(title = "test title ")
 		self.assertEqual(str(blog), blog.title)
 	
@@ -63,6 +63,14 @@ class HomePageTest(TestCase):
 		self.assertContains(response, "Second entry")
 		self.assertContains(response, "description")
 		self.assertContains(response, "this is a title")
+	
+	def test_no_blog(self):
+		'''
+		checks to see in case there are no blogs available. This is done via the empty tag
+		in the templates at all.html
+		'''
+		response = self.client.get('/')
+		self.assertContains(response, 'sorry, there are no blogs currently available')
 
 class BlogViewTest(WebTest):
 	'''
@@ -74,6 +82,10 @@ class BlogViewTest(WebTest):
 		self.blog = Blog.objects.create(title="title", slug="title-django", description="description")
 	
 	def test_basic_view(self):
+		'''
+		it checks the blog and uses the client to get the response status_code then 
+		verifies that it is equal to 200
+		'''
 		response = self.client.get(self.blog.get_absolute_url())
 		self.assertEqual(response.status_code, 200)
 	
@@ -93,7 +105,9 @@ class BlogFormTest(WebTest):
 	'''
 	
 	def test_valid_data(self):
-
+		'''
+		Test the data we place in and see if it is equal to the actual data
+		'''
 		form = BlogForm({
 			'title': "nice title",
 			'description':'this is a description'
