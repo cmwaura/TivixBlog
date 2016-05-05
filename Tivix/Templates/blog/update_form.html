@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% block content %}
+<!-- update form -->
 <div class="col-sm-6 col-sm-offset3">
 	<form method="POST" action="">{% csrf_token %}
 		{{form| crispy}}

@@ -23,6 +23,9 @@ from blog.views import BlogUpdateView as blog_update
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
+    # blog app urls that map the view to template.
+    
     url(r'^$', blog_list.as_view(), name='blog'),
     url(r'blog/create/$', blog_form, name='blog_form'),
     url(r'^blog/(?P<slug>[\w-]+)/$', blog_single.as_view(), name='single_blog'),

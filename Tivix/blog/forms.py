@@ -3,6 +3,9 @@ from .models import Blog
 from django.utils.text import slugify
 
 class BlogForm(forms.ModelForm):
+	'''
+	Form for the user to create a blog
+	'''
 	description = forms.CharField(label="content (required)",
 		widget=forms.Textarea(attrs={"size":40}),
 		required=True)
