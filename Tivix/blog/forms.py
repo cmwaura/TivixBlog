@@ -9,6 +9,9 @@ class BlogForm(forms.ModelForm):
 	description = forms.CharField(label="content (required)",
 		widget=forms.Textarea(attrs={"size":40}),
 		required=True)
+	title = forms.CharField(label="Title (required)",
+		widget =forms.TextInput(attrs={'size':40}),
+		required=True)
 	class Meta:
 		model = Blog
 		fields = ['title', 'description']
