@@ -9,6 +9,27 @@ Testing the following.
 1) models[done]
 2)views[]
 3) forms[done]
+
+code coverage
+
+ame                                         Stmts   Miss  Cover
+----------------------------------------------------------------
+Tivix/__init__.py                                0      0   100%
+Tivix/settings.py                               22      0   100%
+Tivix/urls.py                                    7      0   100%
+blog/__init__.py                                 0      0   100%
+blog/admin.py                                    6      0   100%
+blog/forms.py                                   20      0   100%
+blog/migrations/0001_initial.py                  6      0   100%
+blog/migrations/0002_auto_20160504_2122.py       5      0   100%
+blog/migrations/__init__.py                      0      0   100%
+blog/models.py                                  14      0   100%
+blog/tests.py                                   55      0   100%
+blog/views.py                                   27     11    59%
+manage.py                                        6      0   100%
+----------------------------------------------------------------
+TOTAL                                          168     11    93%
+
 '''
 
 class BlogModelsTestCase(TestCase):
