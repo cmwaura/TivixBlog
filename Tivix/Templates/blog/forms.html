@@ -2,7 +2,8 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class="col-sm-6 col-sm-offset3">
+<div class="col-md-9 col-sm-offset6">
+<div class="well">
 	<form method="POST" action="">{% csrf_token %}
 		{{form| crispy}}
 		<input type="submit" value={% if submit_btn %}
@@ -10,4 +11,6 @@
 		class= 'btn btn-primary'/>
 	</form>
 </div>
+</div>
+{% endblock %}
 {% endblock %}
