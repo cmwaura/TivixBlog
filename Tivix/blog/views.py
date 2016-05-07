@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from django.views.generic import ListView, UpdateView, DetailView
+from django.views.generic import ListView, UpdateView, DetailView, CreateView
 # Create your views here.
 from .models import Blog
 from .forms import BlogForm
@@ -28,25 +28,8 @@ class BlogUpdateView(UpdateView):
 	fields = ['title', 'description']
 	template_name ="blog/update_form.html"
 
-
-def blog_form(request):
-	'''
-	this is the functional Create View of the blog which takes
-	data from the forms.py
-	'''
-	btn = 'submit'
-	if request.method == "POST":
-		form = BlogForm(request.POST or None)
-		if form.is_valid():
-			new_blog= form.save(commit=False)
-			new_blog.save()
-		return HttpResponseRedirect('/')
-	else:
-		form = BlogForm()
-
+class BlogCreateView(CreateView):
 	template_name = "blog/forms.html"
-	context = {
-	"form":form,	
-	"submit_btn": btn,
-	}
-	return render(request, template_name, context)
+	form_class = BlogForm
+
+
