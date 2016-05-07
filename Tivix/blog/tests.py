@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from django_webtest import WebTest
 from .models import Blog
 from .forms import BlogForm
+from django.core.urlresolvers import reverse
 '''
 Testing the following.
 1) models[done]
@@ -53,14 +54,14 @@ class BlogModelsTestCase(TestCase):
 
 class ProjectTest(TestCase):
 	'''
-	testing the homepage to see whether it passes
+	testing the homepage url to see whether it passes
 	[passed]
 	'''
 	def test_homepage(self):
 		response = self.client.get("/")
 		self.assertEqual(response.status_code, 200)
 
-class HomePageTest(TestCase):
+class HomeListViewTest(WebTest):
 	'''
 	Testing the list views in the HomePageTest
 	[passed]
@@ -93,7 +94,45 @@ class HomePageTest(TestCase):
 		response = self.client.get('/')
 		self.assertContains(response, 'sorry, there are no blogs currently available')
 
-class BlogViewTest(WebTest):
+class BlogUpdateviewTest(WebTest):
+	'''
+	testing the update view in the blog.views
+	'''
+
+	def test_update_view(self):
+		'''
+		Sanity check
+		'''
+		blog = Blog.objects.create(title="Second entry", slug= "second-entry", description="description")
+		response = self.client.get(reverse('update_blog', args=[blog.slug]))
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue('form' in response.content)
+	
+	def test_blog(self):		
+		blog = Blog.objects.create(title="Second entry", slug= "second-entry", description="description")
+		
+		update_data = reverse('update_blog', args=[blog.slug])
+		# we ger the form to update the objects
+		response = self.client.get(update_data)
+		form =  response.context['form']
+		data = form.initial
+		# Lets change the title and description
+
+		data = {
+		'title': 'test',		
+		'description': 'update description'
+		}
+		# POST the form with the changed data
+		r = self.client.post(update_data, data)
+		# now lets retrieve our objects to see whether we have changed them
+
+		response = self.client.get(update_data)
+		# see if it contains the new title from data['title']=test
+		self.assertContains(response, 'test')
+		# see if it contains the description 
+		self.assertEqual(response.context['form'].initial['description'], 'update description')
+
+class BlogDetailViewTest(WebTest):
 	'''
 	This class is mainly for testing the description and title in the single 
 	setup where a user can actually read the articles. It uses the get_absolute_url
@@ -117,8 +156,7 @@ class BlogViewTest(WebTest):
 	def test_description_in_blog(self):
 		response = self.client.get(self.blog.get_absolute_url())
 		self.assertContains(response, self.blog.description)
-	
-	
+
 
 class BlogFormTest(WebTest):
 	'''
