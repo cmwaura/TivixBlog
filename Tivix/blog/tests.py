@@ -8,28 +8,28 @@ from django.core.urlresolvers import reverse
 '''
 Testing the following.
 1) models[done]
-2)views[]
+2)views[done]
 3) forms[done]
 
 code coverage
-
-ame                                         Stmts   Miss  Cover
+Name                                         Stmts   Miss  Cover
 ----------------------------------------------------------------
 Tivix/__init__.py                                0      0   100%
-Tivix/settings.py                               22      0   100%
+Tivix/settings.py                               28      0   100%
 Tivix/urls.py                                    7      0   100%
 blog/__init__.py                                 0      0   100%
 blog/admin.py                                    6      0   100%
-blog/forms.py                                   20      0   100%
+blog/forms.py                                   21      0   100%
 blog/migrations/0001_initial.py                  6      0   100%
 blog/migrations/0002_auto_20160504_2122.py       5      0   100%
 blog/migrations/__init__.py                      0      0   100%
 blog/models.py                                  14      0   100%
-blog/tests.py                                   55      0   100%
-blog/views.py                                   27     11    59%
+blog/tests.py                                   85      0   100%
+blog/views.py                                   18      0   100%
 manage.py                                        6      0   100%
 ----------------------------------------------------------------
-TOTAL                                          168     11    93%
+TOTAL                                          196      0   100%
+
 
 '''
 
@@ -157,6 +157,32 @@ class BlogDetailViewTest(WebTest):
 		response = self.client.get(self.blog.get_absolute_url())
 		self.assertContains(response, self.blog.description)
 
+class BlogCreateView(WebTest):
+
+	def test_create_view(self):
+		'''
+		Sanity check
+		'''
+		blog = Blog(title="Second entry", slug= "second-entry", description="description")
+		response = self.client.get(reverse('blog_form'))
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue('form' in response.content)
+		data = {
+		'title': 'test',		
+		'description': 'update description'
+		}
+		# POST the form with the created data
+		r = self.client.post(reverse('blog_form'), data)
+		# now lets retrieve our objects to see whether we have created them
+
+		blog = Blog.objects.order_by('created_date').first()
+		# # see if it contains the new title from data['title']=test
+		self.assertContains(response, 'test')
+		# # see if it contains the description 
+		self.assertEqual(blog.title, 'test')
+		self.assertEqual(blog.description, data['description'])
+
+	
 
 class BlogFormTest(WebTest):
 	'''
